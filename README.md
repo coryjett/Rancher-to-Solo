@@ -1,20 +1,17 @@
 ## Spin up a k3d environment
 
 ```
-k3d cluster create --agents 1 test-cluster \
+k3d cluster create --agents 1 rancher-cluster \
   --api-port 6445 \
   --port '8080:80@loadbalancer' \
   --port '8081:443@loadbalancer'
 ```
 
 ### Delete k3d environment
-`delete-k3d-cluster $MGMT`
 
-`k3d cluster delete test-cluster`
+`k3d cluster delete rancher-cluster`
 
 ## Install Certmanager
-
-May not be needed if you are using Traefic and K3d
 
 ### Docs
 https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/install-upgrade-on-a-kubernetes-cluster#4-install-cert-manager
@@ -23,6 +20,8 @@ https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade
 https://github.com/cert-manager/cert-manager/releases
 
 ### Install certmanager crds
+
+Don't do this step if you are running k3d and Traefic (it breaks stuff)
 
 If you have installed the CRDs manually, instead of setting `installCRDs` or `crds.enabled` to `true` in your Helm install command, you should upgrade your CRD resources before upgrading the Helm chart:
 
