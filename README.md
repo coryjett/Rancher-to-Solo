@@ -82,3 +82,19 @@ Modify /etc/hosts
 Navigate to https://rancher.my.org:8081/
 
 Login with `admin` as the bootstrap password
+
+## Install Istio
+
+### Docs
+https://ranchermanager.docs.rancher.com/how-to-guides/advanced-user-guides/istio-setup-guide
+
+`CNI` option documentation: https://ranchermanager.docs.rancher.com/integrations-in-rancher/istio/configuration-options/pod-security-policies
+
+### Install the Istio chart
+
+Navigate to https://rancher.my.org:8081/dashboard/c/local/apps/charts
+
+Install the `Monitoring` chart with the default configuration
+
+Install the `Istio` chart with `Pilot`, `Kiali`, `Ingress Gateway`, `Telemetry`, and `Jaeger Tracing` enabled.  `Kiali` was complaining about a missing `CRD` and took some time before it would install.
+
