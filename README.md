@@ -108,7 +108,7 @@ https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-adva
 
 `istioctl x precheck`
 
-### Set the revision field
+### Install a new control plane with a revision field
 
 Install a new control plane
 
@@ -122,6 +122,8 @@ Check for multiple sidcare injector configs
 
 `kubectl get mutatingwebhookconfigurations`
 
+### Deploy a sample app
+
 Create test namespace
 
 `kubectl create ns test-ns`
@@ -133,6 +135,8 @@ Enable instio sidecar injection
 Create a sample pod
 
 `kubectl apply -n test-ns -f sleep/sleep.yaml`
+
+### Cut the `test-ns` namespace over to the new control plane
 
 Remove the `istio-injection` label and add the `istio.io/rev` label
 
