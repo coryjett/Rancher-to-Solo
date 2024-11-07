@@ -98,3 +98,54 @@ Install the `Monitoring` chart with the default configuration
 
 Install the `Istio` chart with `Pilot`, `Kiali`, `Ingress Gateway`, `Telemetry`, and `Jaeger Tracing` enabled.  `Kiali` was complaining about a missing `CRD` and took some time before it would install.
 
+## Install a canary Istiod
+
+### Docs
+https://istio.io/latest/docs/setup/upgrade/canary/
+https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-advanced 
+
+### Check upgrade compatability
+
+`istioctl x precheck`
+
+### Set the revision field
+
+Install a new control plane
+
+`istioctl install --set revision=canary`
+
+Check to make sure you have two control planes
+
+`kubectl get pods -n istio-system -l app=istiod`
+
+Check for multiple sidcare injector configs
+
+`kubectl get mutatingwebhookconfigurations`
+
+Create test namespace
+
+`kubectl create ns test-ns`
+
+Enable instio sidecar injection
+
+`kubectl label namespace test-ns istio-injection=enabled`
+
+Create a sample pod
+
+`kubectl apply -n test-ns -f sleep/sleep.yaml`
+
+Remove the `istio-injection` label and add the `istio.io/rev` label
+
+`kubectl label namespace test-ns istio-injection- istio.io/rev=canary`
+
+Check the labels
+
+`kubectl get ns test-ns --show-labels`
+
+Restart all pods in teh `test-ns` namespace
+
+`kubectl rollout restart deployment -n test-ns`
+
+Check to make sure pods are usng the name control plane
+
+`istioctl proxy-status | grep "\.test-ns "`
