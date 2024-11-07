@@ -148,7 +148,7 @@ Check the labels
 
 `kubectl get ns test-ns --show-labels`
 
-Restart all pods in teh `test-ns` namespace
+Restart all pods in the `test-ns` namespace
 
 `kubectl rollout restart deployment -n test-ns`
 
