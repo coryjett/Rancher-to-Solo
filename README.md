@@ -122,7 +122,7 @@ Check for multiple sidcare injector configs
 
 `kubectl get mutatingwebhookconfigurations`
 
-### Deploy a sample app
+## Deploy a sample app
 
 Create test namespace
 
@@ -135,6 +135,8 @@ Enable instio sidecar injection
 Create a sample pod
 
 `kubectl apply -n test-ns -f sleep/sleep.yaml`
+
+## Cutover to the new control plane
 
 ### Cut the `test-ns` namespace over to the new control plane
 
