@@ -83,7 +83,7 @@ Navigate to https://rancher.my.org:8081/
 
 Login with `admin` as the bootstrap password
 
-## Install Istio
+## Install Rancher Istio
 
 ### Docs
 https://ranchermanager.docs.rancher.com/how-to-guides/advanced-user-guides/istio-setup-guide
