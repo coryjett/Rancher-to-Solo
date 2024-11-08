@@ -137,7 +137,7 @@ helm upgrade --install istiod-1-22 istio/istiod \
 --version 1.22.6 \
 --namespace istio-system \
 --wait \
--f istiod-values.yaml
+-f istio-values.yaml
 ```
 
 You should see a second `Istiod` instance with the value of `revision:` in `istiod-values.yaml` in the name

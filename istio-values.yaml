@@ -50,6 +50,14 @@ meshConfig:
   # Enable metrics merging
   enablePrometheusMerge: true
 
+  meshConfig:
+    enableTracing: true
+    defaultConfig:
+      tracing:
+        sampling: 100
+        zipkin:
+          address: gloo-telemetry-collector.gloo-mesh.svc.cluster.local:9411
+
   defaultConfig:
     # Wait for the istio-proxy to start before starting application pods
     holdApplicationUntilProxyStarts: true
