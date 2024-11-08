@@ -155,3 +155,71 @@ Restart all pods in the `test-ns` namespace
 Check to make sure pods are usng the name control plane
 
 `istioctl proxy-status | grep "\.test-ns "`
+
+## Install a second Itio control plane using Solo images
+
+### Docs
+
+https://docs.solo.io/gloo-mesh-enterprise/latest/istio/manual/manual_deploy/#control-plane
+
+### Install
+
+Use istiod-values.yaml in this repository as a template values file.  It is currently configured for 1.22.6.
+
+```
+helm upgrade --install istiod-1-22 istio/istiod \          
+--version 1.22.6 \
+--namespace istio-system \
+--wait \
+-f istiod-values.yaml
+```
+
+You should see a second `Istiod` instance with the value of `revision:` in `istiod-values.yaml` in the name
+
+`kubectl get pods -n istio-system`
+
+## Install Gloo Mesh Core
+
+### Docs
+
+https://docs.solo.io/gloo-mesh-core/latest/setup/install/#single-cluster
+
+### Install
+
+```
+helm repo add gloo-platform https://storage.googleapis.com/gloo-platform/helm-charts
+helm repo update
+```
+
+```
+export CLUSTER_NAME=rancher-cluster
+export GLOO_VERSION=2.6.6
+export GLOO_MESH_CORE_LICENSE_KEY=key
+```
+
+Check the key to make sure it is valid
+
+`meshctl license check --key $(echo ${GLOO_MESH_CORE_LICENSE_KEY} | base64 -w0)`
+
+```
+helm upgrade -i gloo-platform-crds gloo-platform/gloo-platform-crds \
+ --namespace=gloo-mesh \
+ --create-namespace \
+ --version=$GLOO_VERSION \
+ --set installEnterpriseCrds=false
+ ```
+
+ Use `gloo-single.yaml` in thie repository as a template values file.  It will deploy Gloo Mesh Core with a self-signed TLS server cert.
+
+```
+helm upgrade -i gloo-platform gloo-platform/gloo-platform \
+  -n gloo-mesh \
+  --version $GLOO_VERSION \
+  --values gloo-single.yaml \
+  --set common.cluster=$CLUSTER_NAME \
+  --set licensing.glooMeshCoreLicenseKey=$GLOO_MESH_CORE_LICENSE_KEY
+  ```
+
+Open up the Gloo Mesh Core UI
+
+`meshctl dashboard`
