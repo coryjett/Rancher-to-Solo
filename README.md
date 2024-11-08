@@ -130,7 +130,7 @@ https://docs.solo.io/gloo-mesh-enterprise/latest/istio/manual/manual_deploy/#con
 
 ### Install
 
-Use `istiod-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.
+Use `istio-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.
 
 ```
 helm upgrade --install istiod-1-22 istio/istiod \          
