@@ -122,20 +122,6 @@ Check for multiple sidcare injector configs
 
 `kubectl get mutatingwebhookconfigurations`
 
-## Deploy a sample app
-
-Create test namespace
-
-`kubectl create ns test-ns`
-
-Enable instio sidecar injection
-
-`kubectl label namespace test-ns istio-injection=enabled`
-
-Create a sample pod
-
-`kubectl apply -n test-ns -f sleep/sleep.yaml`
-
 ## Install a canary Istio control plane using Solo images
 
 ### Docs
@@ -157,6 +143,20 @@ helm upgrade --install istiod-1-22 istio/istiod \
 You should see a second `Istiod` instance with the value of `revision:` in `istiod-values.yaml` in the name
 
 `kubectl get pods -n istio-system`
+
+## Deploy a sample app
+
+Create test namespace
+
+`kubectl create ns test-ns`
+
+Enable instio sidecar injection
+
+`kubectl label namespace test-ns istio-injection=enabled`
+
+Create a sample pod
+
+`kubectl apply -n test-ns -f sleep/sleep.yaml`
 
 ## Cutover to the new control plane
 
