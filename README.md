@@ -164,7 +164,7 @@ https://docs.solo.io/gloo-mesh-enterprise/latest/istio/manual/manual_deploy/#con
 
 ### Install
 
-Use istiod-values.yaml in this repository as a template values file.  It is currently configured for 1.22.6.
+Use `istiod-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.
 
 ```
 helm upgrade --install istiod-1-22 istio/istiod \          
@@ -209,7 +209,7 @@ helm upgrade -i gloo-platform-crds gloo-platform/gloo-platform-crds \
  --set installEnterpriseCrds=false
  ```
 
- Use `gloo-single.yaml` in thie repository as a template values file.  It will deploy Gloo Mesh Core with a self-signed TLS server cert.
+ Use `gloo-single.yaml` in this repository as a template values file.  It will deploy Gloo Mesh Core with a self-signed TLS server cert.
 
 ```
 helm upgrade -i gloo-platform gloo-platform/gloo-platform \
