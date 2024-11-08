@@ -98,7 +98,7 @@ Install the `Monitoring` chart with the default configuration
 
 Install the `Istio` chart with `Pilot`, `Kiali`, `Ingress Gateway`, `Telemetry`, and `Jaeger Tracing` enabled.  `Kiali` was complaining about a missing `CRD` and took some time before it would install.
 
-## Install a canary Istiod
+## Install a canary OSS Istio Control plane (or using the Solo steps below)
 
 ### Docs
 https://istio.io/latest/docs/setup/upgrade/canary/
@@ -136,27 +136,7 @@ Create a sample pod
 
 `kubectl apply -n test-ns -f sleep/sleep.yaml`
 
-## Cutover to the new control plane
-
-### Cut the `test-ns` namespace over to the new control plane
-
-Remove the `istio-injection` label and add the `istio.io/rev` label
-
-`kubectl label namespace test-ns istio-injection- istio.io/rev=canary`
-
-Check the labels
-
-`kubectl get ns test-ns --show-labels`
-
-Restart all pods in the `test-ns` namespace
-
-`kubectl rollout restart deployment -n test-ns`
-
-Check to make sure pods are usng the name control plane
-
-`istioctl proxy-status | grep "\.test-ns "`
-
-## Install a second Itio control plane using Solo images
+## Install a canary Istio control plane using Solo images
 
 ### Docs
 
@@ -177,6 +157,26 @@ helm upgrade --install istiod-1-22 istio/istiod \
 You should see a second `Istiod` instance with the value of `revision:` in `istiod-values.yaml` in the name
 
 `kubectl get pods -n istio-system`
+
+## Cutover to the new control plane
+
+### Cut the `test-ns` namespace over to the new control plane
+
+Remove the `istio-injection` label and add the `istio.io/rev` label
+
+`kubectl label namespace test-ns istio-injection- istio.io/rev=canary`
+
+Check the labels
+
+`kubectl get ns test-ns --show-labels`
+
+Restart all pods in the `test-ns` namespace
+
+`kubectl rollout restart deployment -n test-ns`
+
+Check to make sure pods are usng the name control plane
+
+`istioctl proxy-status | grep "\.test-ns "`
 
 ## Install Gloo Mesh Core
 
