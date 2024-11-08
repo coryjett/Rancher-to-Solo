@@ -98,7 +98,7 @@ Install the `Monitoring` chart with the default configuration
 
 Install the `Istio` chart with `Pilot`, `Kiali`, `Ingress Gateway`, `Telemetry`, and `Jaeger Tracing` enabled.  `Kiali` was complaining about a missing `CRD` and took some time before it would install.
 
-## Install a canary OSS Istio Control plane (or using the Solo steps below)
+## Install a canary OSS Istio Control plane (or use the steps below to use Solo images)
 
 ### Docs
 https://istio.io/latest/docs/setup/upgrade/canary/
