@@ -199,9 +199,9 @@ List existing tags
 
 `istioctl tag list`
 
-Create a new tag called `default` for the new control plane
+Create a new tag called `canary` for the new control plane
 
-`istioctl tag set default --revision 1-22 --overwrite`
+`istioctl tag set canary --revision 1-22 --overwrite`
 
 Verify a `MutatingWebhookConfiguration` was created for the tag
 
@@ -213,7 +213,7 @@ Verify a `MutatingWebhookConfiguration` was created for the tag
 
 Remove the `istio-injection` label and add the `istio.io/rev` label
 
-`kubectl label namespace test-ns istio-injection- istio.io/rev=default`
+`kubectl label namespace test-ns istio-injection- istio.io/rev=canary`
 
 Check the labels
 
