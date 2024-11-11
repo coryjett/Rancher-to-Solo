@@ -102,7 +102,12 @@ Install the `Istio` chart with `Pilot`, `Kiali`, `Ingress Gateway`, `Telemetry`,
 
 ### Docs
 https://istio.io/latest/docs/setup/upgrade/canary/
+
 https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-advanced 
+
+https://istio.io/latest/blog/2021/revision-tags/
+
+https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
 
 ### Check upgrade compatability
 
@@ -112,21 +117,39 @@ https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-adva
 
 Install a new control plane
 
-`istioctl install --set revision=canary`
+`istioctl install --set revision=1-22`
 
 Check to make sure you have two control planes
 
 `kubectl get pods -n istio-system -l app=istiod`
 
-Check for multiple sidcare injector configs
+Check for multiple sidecar injector configs
 
 `kubectl get mutatingwebhookconfigurations`
+
+### Create a tag for the new revision
+
+List existing tags
+
+`istioctl tag list`
+
+Create a new tag called `default` for the new control plane
+
+`istioctl tag set default --revision 1-22`
+
+Verify a `MutatingWebhookConfiguration` was created for the tag
+
+`kubectl get MutatingWebhookConfiguration`
 
 ## Install a canary Istio control plane using Solo images
 
 ### Docs
 
 https://docs.solo.io/gloo-mesh-enterprise/latest/istio/manual/manual_deploy/#control-plane
+
+https://istio.io/latest/blog/2021/revision-tags/
+
+https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
 
 ### Install
 
@@ -144,6 +167,24 @@ You should see a second `Istiod` instance with the value of `revision:` in `isti
 
 `kubectl get pods -n istio-system`
 
+Check for multiple sidecar injector configs
+
+`kubectl get mutatingwebhookconfigurations`
+
+### Create a tag for the new revision
+
+List existing tags
+
+`istioctl tag list`
+
+Create a new tag called `default` for the new control plane
+
+`istioctl tag set default --revision 1-22`
+
+Verify a `MutatingWebhookConfiguration` was created for the tag
+
+`kubectl get MutatingWebhookConfiguration`
+
 ## Deploy a sample app
 
 Create test namespace
@@ -160,31 +201,11 @@ Create a sample pod
 
 ## Cutover to the new control plane
 
-### Docs
-
-https://istio.io/latest/blog/2021/revision-tags/
-https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
-https://istio.io/latest/blog/2021/revision-tags/ 
-
-### Create a tag for the new revision
-
-List existing tags
-
-`istioctl tag list`
-
-Create a new tag called `canary` for the new control plane
-
-`istioctl tag set canary --revision 1-22`
-
-Verify the `MutatingWebhookConfiguration` was created
-
-`kubectl get MutatingWebhookConfiguration`
-
 ### Cut the `test-ns` namespace over to the new control plane
 
 Remove the `istio-injection` label and add the `istio.io/rev` label
 
-`kubectl label namespace test-ns istio-injection- istio.io/rev=canary`
+`kubectl label namespace test-ns istio-injection- istio.io/rev=default`
 
 Check the labels
 
@@ -196,7 +217,7 @@ Restart all pods in the `test-ns` namespace
 
 Check to make sure pods are usng the name control plane
 
-`istioctl proxy-status | grep "\.test-ns "`
+`istioctl proxy-status | grep "\.test-ns"`
 
 ## Install Gloo Mesh Core
 
