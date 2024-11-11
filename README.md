@@ -160,6 +160,26 @@ Create a sample pod
 
 ## Cutover to the new control plane
 
+### Docs
+
+https://istio.io/latest/blog/2021/revision-tags/
+https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
+https://istio.io/latest/blog/2021/revision-tags/ 
+
+### Create a tag for the new revision
+
+List existing tags
+
+`istioctl tag list`
+
+Create a new tag called `canary` for the new control plane
+
+`istioctl tag set canary --revision 1-22`
+
+Verify the `MutatingWebhookConfiguration` was created
+
+`kubectl get MutatingWebhookConfiguration`
+
 ### Cut the `test-ns` namespace over to the new control plane
 
 Remove the `istio-injection` label and add the `istio.io/rev` label
