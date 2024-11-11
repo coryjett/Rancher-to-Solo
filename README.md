@@ -105,10 +105,6 @@ https://istio.io/latest/docs/setup/upgrade/canary/
 
 https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-advanced 
 
-https://istio.io/latest/blog/2021/revision-tags/
-
-https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
-
 ### Check upgrade compatability
 
 `istioctl x precheck`
@@ -172,6 +168,14 @@ Create a sample pod
 `kubectl apply -n test-ns -f sleep/sleep.yaml`
 
 ## Create a tag for the new revision
+
+### Docs
+
+https://istio.io/latest/blog/2021/revision-tags/
+
+https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
+
+### Create a tag
 
 List existing tags
 
