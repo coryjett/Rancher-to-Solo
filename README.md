@@ -127,20 +127,6 @@ Check for multiple sidecar injector configs
 
 `kubectl get mutatingwebhookconfigurations`
 
-### Create a tag for the new revision
-
-List existing tags
-
-`istioctl tag list`
-
-Create a new tag called `default` for the new control plane
-
-`istioctl tag set default --revision 1-22`
-
-Verify a `MutatingWebhookConfiguration` was created for the tag
-
-`kubectl get MutatingWebhookConfiguration`
-
 ## Install a canary Istio control plane using Solo images
 
 ### Docs
@@ -171,20 +157,6 @@ Check for multiple sidecar injector configs
 
 `kubectl get mutatingwebhookconfigurations`
 
-### Create a tag for the new revision
-
-List existing tags
-
-`istioctl tag list`
-
-Create a new tag called `default` for the new control plane
-
-`istioctl tag set default --revision 1-22`
-
-Verify a `MutatingWebhookConfiguration` was created for the tag
-
-`kubectl get MutatingWebhookConfiguration`
-
 ## Deploy a sample app
 
 Create test namespace
@@ -198,6 +170,20 @@ Enable instio sidecar injection
 Create a sample pod
 
 `kubectl apply -n test-ns -f sleep/sleep.yaml`
+
+## Create a tag for the new revision
+
+List existing tags
+
+`istioctl tag list`
+
+Create a new tag called `default` for the new control plane
+
+`istioctl tag set default --revision 1-22`
+
+Verify a `MutatingWebhookConfiguration` was created for the tag
+
+`kubectl get MutatingWebhookConfiguration`
 
 ## Cutover to the new control plane
 
