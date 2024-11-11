@@ -201,7 +201,7 @@ List existing tags
 
 Create a new tag called `default` for the new control plane
 
-`istioctl tag set default --revision 1-22`
+`istioctl tag set default --revision 1-22 --overwrite`
 
 Verify a `MutatingWebhookConfiguration` was created for the tag
 
@@ -249,6 +249,8 @@ export GLOO_MESH_CORE_LICENSE_KEY=key
 Check the key to make sure it is valid
 
 `meshctl license check --key $(echo ${GLOO_MESH_CORE_LICENSE_KEY} | base64 -w0)`
+
+Install the Gloo Mesh Core CRDs
 
 ```
 helm upgrade -i gloo-platform-crds gloo-platform/gloo-platform-crds \
