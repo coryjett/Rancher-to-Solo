@@ -257,8 +257,13 @@ helm upgrade -i gloo-platform-crds gloo-platform/gloo-platform-crds \
  --namespace=gloo-mesh \
  --create-namespace \
  --version=$GLOO_VERSION \
- --set installEnterpriseCrds=false
+ --set installEnterpriseCrds=false \
+ --set featureGates.insightsConfiguration=true
  ```
+
+ Apply the `insightsconfig.yaml` file to work around [this](https://github.com/solo-io/gloo-mesh-enterprise/issues/14763) bug in the Gloo UI when using Istio revision tags.
+
+ `kubectl create -f insightsconfig.yaml`
 
  Use `gloo-single.yaml` in this repository as a template values file.  It will deploy Gloo Mesh Core with a self-signed TLS server cert.
 
