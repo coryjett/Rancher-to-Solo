@@ -171,6 +171,26 @@ Check for multiple sidecar injector configs
 
 `kubectl get mutatingwebhookconfigurations`
 
+## Deploy a gateway using Solo images
+
+### Docs
+
+https://github.com/istio/istio/tree/release-1.24/manifests/charts/gateways/istio-ingress
+
+https://istio.io/latest/docs/setup/additional-setup/gateway/
+
+### Install
+
+Use `gateway-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.  Replace `global.hub` and `service.loadBalancerIP` with actual values.
+
+```
+helm upgrade --install istio-gateway istio/gateway \          
+--version 1.22.6 \
+--namespace istio-system \
+--wait \
+-f gateway-values.yaml
+```
+
 ## Deploy a sample app
 
 Create test namespace

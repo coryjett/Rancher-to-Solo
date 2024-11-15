@@ -1,0 +1,32 @@
+global:
+  # Replace with actual hub value
+  hub: hub
+  tag: 1.22.6-solo
+name: eiap-ingress-gw01
+labels: # applies to all labels and selectors
+  app: eiap-ingress-gw01
+  istio: eiap-ingress-gw01
+service:
+  # Replace with actual load balancer IP
+  loadBalancerIP: 127.0.0.1
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
+    service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout: '30'
+nodeSelector:
+  kubernetes.azure.com/mode: system
+  kubernetes.io/os: linux
+tolerations:
+- key: CriticalAddonsOnly
+  operator: Exists
+autoscaling:
+  enabled: true
+  minReplicas: 5
+  maxReplicas: 9
+topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app: eiap-ingress-gw01
+    maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
