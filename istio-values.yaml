@@ -119,9 +119,3 @@ pilot:
             values:
             - istiod-1-22
         topologyKey: kubernetes.io/hostname
-service:
-  loadBalancerIP: 172.25.160.254
-  type: LoadBalancer
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
-    service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout: '30'
