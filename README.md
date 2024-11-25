@@ -156,7 +156,7 @@ https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
 Use `istio-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.
 
 ```
-helm upgrade --install istiod-1-22 istio/istiod \          
+helm upgrade --install istiod-1-22 istio/istiod \
 --version 1.22.6 \
 --namespace istio-system \
 --wait \
