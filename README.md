@@ -184,12 +184,16 @@ https://istio.io/latest/docs/setup/additional-setup/gateway/
 Use `gateway-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.  Replace `global.hub` and `service.loadBalancerIP` with actual values.
 
 ```
-helm upgrade --install istio-gateway istio/gateway \          
+helm upgrade --install istio-gateway istio/gateway \
 --version 1.22.6 \
 --namespace istio-system \
 --wait \
 -f gateway-values.yaml
 ```
+
+This will provision a second gateway attached to the new `1-22` Istio control plane.
+
+![High Level Canary](/images/high-level-canary.svg)
 
 ## Deploy a sample app
 
