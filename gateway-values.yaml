@@ -8,26 +8,11 @@ labels: # applies to all labels and selectors
   app: eiap-ingress-gw01
   istio: eiap-ingress-gw01
 service:
-  # Replace with actual load balancer IP
+  # Replace with actual load balancer IP and type with LoadBalancer
   # loadBalancerIP: 127.0.0.1
   type: NodePort
-  #annotations:
-   # service.beta.kubernetes.io/azure-load-balancer-internal: 'true'
-   # service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout: '30'
-#nodeSelector:
- # kubernetes.azure.com/mode: system
- # kubernetes.io/os: linux
-#tolerations:
-#- key: CriticalAddonsOnly
-#  operator: Exists
 autoscaling:
+  # Enable autoscaling as needed
   enabled: false
-  minReplicas: 1
-  maxReplicas: 1
-#topologySpreadConstraints:
-  #- labelSelector:
-      #matchLabels:
-        #app: eiap-ingress-gw01
-    #maxSkew: 1
-    #topologyKey: topology.kubernetes.io/zone
-    #whenUnsatisfiable: DoNotSchedule
+  minReplicas: 5
+  maxReplicas: 9

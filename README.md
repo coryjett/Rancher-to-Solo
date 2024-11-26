@@ -191,7 +191,7 @@ helm upgrade --install istio-gateway istio/gateway \
 -f gateway-values.yaml
 ```
 
-This will provision a second gateway attached to the new `1-22` Istio control plane.
+This will provision a second gateway attached to the new `1-22` Istio control plane.  Cutting over to the new gateway will be done at the upstream loadbalancer (such as an LTM) in this scenario as detailed [here](https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-with-external-traffic-shifting-advanced).
 
 ![High Level Canary](/images/high-level-canary.svg)
 
