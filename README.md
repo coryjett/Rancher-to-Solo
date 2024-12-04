@@ -153,6 +153,12 @@ https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
 
 ### Install
 
+Duplicate the Rancher Istio CA certificate for the canary control plane
+
+`kubectl get secret istio-ca-secret -n istio-system -o json | \
+jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences","annotations","labels"]) | .metadata.name = "cacerts"' | \         
+kubectl apply -n istio-system -f -`
+
 Use `istio-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.
 
 ```
@@ -197,17 +203,14 @@ This will provision a second gateway attached to the new `1-22` Istio control pl
 
 ## Deploy a sample app
 
-Create test namespace
-
-`kubectl create ns test-ns`
 
 Enable instio sidecar injection
 
-`kubectl label namespace test-ns istio-injection=enabled`
+`kubectl label namespace default istio-injection=enabled`
 
 Create a sample pod
 
-`kubectl apply -n test-ns -f sleep/sleep.yaml`
+`kubectl apply -f bookinfo.yaml`
 
 ## Create a tag for the new revision
 
@@ -231,25 +234,39 @@ Verify a `MutatingWebhookConfiguration` was created for the tag
 
 `kubectl get MutatingWebhookConfiguration`
 
+## Check application cert chain on the Rancher deployed Istio
+
+`kubectl exec -t  deploy/reviews-v1 -- openssl s_client -showcerts -connect ratings:9080 -alpn istio`
+
+Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`
+
 ## Cutover to the new control plane
 
-### Cut the `test-ns` namespace over to the new control plane
+### Cut the `default` namespace over to the new control plane
 
 Remove the `istio-injection` label and add the `istio.io/rev` label
 
-`kubectl label namespace test-ns istio-injection- istio.io/rev=canary`
+`kubectl label namespace default istio-injection- istio.io/rev=canary`
 
 Check the labels
 
-`kubectl get ns test-ns --show-labels`
+`kubectl get ns default --show-labels`
 
-Restart all pods in the `test-ns` namespace
+Restart all pods in the `default` namespace
 
-`kubectl rollout restart deployment -n test-ns`
+`kubectl rollout restart deployment`
 
 Check to make sure pods are usng the name control plane
 
-`istioctl proxy-status | grep "\.test-ns"`
+`istioctl proxy-status | grep "\.default"`
+
+## Check application cert chain on the canary Istio
+
+Make sure the root CA is the same as previously so that everything is trusted.
+
+`kubectl exec -t  deploy/reviews-v1 -- openssl s_client -showcerts -connect ratings:9080 -alpn istio`
+
+Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.  Compare it to the previous root certificate that was used for Rancher deploy Istio and confirm they are the same.
 
 ## Install Gloo Mesh Core
 
