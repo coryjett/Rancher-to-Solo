@@ -14,6 +14,7 @@ This provides  documentation on how to
 * [Istioctl](https://istio.io/latest/docs/ops/diagnostic-tools/istioctl/)
 * [Meshctl](https://docs.solo.io/gloo-mesh-gateway/main/setup/prepare/meshctl_cli_install/)
 * A Gloo Mesh Core [license key](https://docs.solo.io/gloo-mesh-core/2.5.x/setup/prepare/licensing/#get-a-license-key)
+* [jq](https://jqlang.github.io/jq/)
 
 
 ## Spin up a k3d environment
