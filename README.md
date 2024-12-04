@@ -155,9 +155,7 @@ https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
 
 Duplicate the Rancher Istio CA certificate for the canary control plane
 
-`kubectl get secret istio-ca-secret -n istio-system -o json | \
-jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences","annotations","labels"]) | .metadata.name = "cacerts"' | \         
-kubectl apply -n istio-system -f -`
+`kubectl get secret istio-ca-secret -n istio-system -o json | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences","annotations","labels"]) | .metadata.name = "cacerts"' | kubectl apply -n istio-system -f -`
 
 Use `istio-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.
 
