@@ -154,10 +154,6 @@ https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
 
 ### Install
 
-Duplicate the Rancher Istio CA certificate for the canary control plane
-
-`kubectl get secret istio-ca-secret -n istio-system -o json | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid","ownerReferences","annotations","labels"]) | .metadata.name = "cacerts"' | kubectl apply -n istio-system -f -`
-
 Use `istio-values.yaml` in this repository as a template values file.  It is currently configured for 1.22.6.
 
 ```
@@ -201,7 +197,6 @@ This will provision a second gateway attached to the new `1-22` Istio control pl
 ![High Level Canary](/images/high-level-canary.svg)
 
 ## Deploy a sample app
-
 
 Enable instio sidecar injection
 
