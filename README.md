@@ -204,7 +204,7 @@ Enable instio sidecar injection
 
 Create a sample pod
 
-`kubectl apply -f bookinfo.yaml`
+`kubectl apply -f bookinfo.yml`
 
 ## Create a tag for the new revision
 
