@@ -34,15 +34,15 @@ global:
   # Required for annotating Istio metrics with the cluster name.
   # Must match the trustDomain.
   multiCluster:
-    clusterName: rancher-cluster
+    clusterName: cluster.local
 
 # Mesh configuration options
 meshConfig:
   # The administrative root namespace for Istio configuration
-  rootNamespace: istio-config
+  rootNamespace: istio-system
   # The trust root of a system, which is the name of the cluster that
   # corresponds with the CA certificate CommonName identity.
-  trustDomain: rancher-cluster
+  trustDomain: cluster.local
   # Enable access logging to standard output only if using.
   #accessLogFile: "/dev/stdout"
   # Encoding for the proxy access log (TEXT or JSON). Default value is TEXT.

@@ -119,6 +119,7 @@ spec:
       labels:
         app: ratings
         version: v1
+        #istio.io/rev: 1-22
     spec:
       serviceAccountName: bookinfo-ratings
       containers:
@@ -170,6 +171,7 @@ spec:
       labels:
         app: reviews
         version: v1
+        #istio.io/rev: default
     spec:
       serviceAccountName: bookinfo-reviews
       containers:
