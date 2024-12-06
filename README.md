@@ -264,7 +264,7 @@ Make sure the root CA is the same as previously so that everything is trusted.
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.  Compare it to the previous root certificate that was used for Rancher deploy Istio and confirm they are the same.
 
-## Mark the Rancher deployed Istio CRDs as Helm managed
+## Mark the Rancher deployed Istio CRDs as Helm managed install the istio-base Helm chart
 
 Apply the following function per [this](https://github.com/helm/helm/issues/2730#issuecomment-2128275312) Github issue:
 
@@ -288,7 +288,7 @@ function helm-install-takeover() {
 }
 ```
 
-Run the following command to label/annotate all Rancher deployed Istio resources in the `istio-system` namespace.  This requires the [Kubectl-grep](https://github.com/howardjohn/kubectl-grep) `kubectl` plugin.  You can confirm this plugin is available by running `kubectl plugin list` and noting if `kubectl-grep` is available.  This will allow us to manage these resources with the [istio-base](https://github.com/istio/istio/tree/master/manifests/charts/base) helm chart.
+Run the following command to label/annotate all Rancher deployed Istio Custom Resource Definitions (CRDs) in the `istio-system` namespace as Helm managed.  This requires the [Kubectl-grep](https://github.com/howardjohn/kubectl-grep) `kubectl` plugin.  You can confirm this plugin is available by running `kubectl plugin list` and noting if `kubectl-grep` is available.  This will allow us to manage these resources with the [istio-base](https://github.com/istio/istio/tree/master/manifests/charts/base) Helm chart.
 
 `helm-install-takeover istio-base istio-system istio/base`
 
