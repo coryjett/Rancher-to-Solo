@@ -15,6 +15,8 @@ This provides  documentation on how to
 * [Meshctl](https://docs.solo.io/gloo-mesh-gateway/main/setup/prepare/meshctl_cli_install/)
 * A Gloo Mesh Core [license key](https://docs.solo.io/gloo-mesh-core/2.5.x/setup/prepare/licensing/#get-a-license-key)
 * [jq](https://jqlang.github.io/jq/)
+* [Go](https://go.dev/doc/install)
+* [Kubectl-grep](https://github.com/howardjohn/kubectl-grep)
 
 
 ## Spin up a k3d environment
@@ -261,6 +263,63 @@ Make sure the root CA is the same as previously so that everything is trusted.
 `kubectl exec -t  deploy/reviews-v1 -- openssl s_client -showcerts -connect ratings:9080 -alpn istio`
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.  Compare it to the previous root certificate that was used for Rancher deploy Istio and confirm they are the same.
+
+## Mark the Rancher deployed Istio CRDs as Helm managed
+
+Apply the following function per [this](https://github.com/helm/helm/issues/2730#issuecomment-2128275312) Github issue:
+
+```
+function helm-install-takeover() {                           
+  release=$1
+  release_namespace=$2
+  shift
+  shift
+  while read -r line; do
+    kind=`<<<$line cut -d/ -f1`
+    nokind=`<<<$line cut -d/ -f2`
+    namespace=`<<<${nokind} rev |cut -d. -f1|rev`
+    name=${nokind%$namespace}
+    name="${name%.}"
+    kubectl annotate $kind $name ${namespace:+--namespace=$namespace} meta.helm.sh/release-name=$release
+    kubectl annotate $kind $name ${namespace:+--namespace=$namespace} meta.helm.sh/release-namespace=$release_namespace
+    kubectl label $kind $name ${namespace:+--namespace=$namespace} app.kubernetes.io/managed-by=Helm
+  done <<< $(helm template $release -n $release_namespace $@ | kubectl grep -s)
+  helm install $release -n $release_namespace $@
+}
+```
+
+Run the following command to label/annotate all Rancher deployed Istio resources in the `istio-system` namespace.  This requires the [Kubectl-grep](https://github.com/howardjohn/kubectl-grep) `kubectl` plugin.  You can confirm this plugin is available by running `kubectl plugin list` and noting if `kubectl-grep` is available.  This will allow us to manage these resources with the [istio-base](https://github.com/istio/istio/tree/master/manifests/charts/base) helm chart.
+
+`helm-install-takeover istio-base istio-system istio/base`
+
+You should see the following output:
+
+```
+helm-install-takeover istio-base istio-system istio/base                     
+customresourcedefinition.apiextensions.k8s.io/wasmplugins.extensions.istio.io annotated
+customresourcedefinition.apiextensions.k8s.io/wasmplugins.extensions.istio.io annotated
+customresourcedefinition.apiextensions.k8s.io/wasmplugins.extensions.istio.io labeled
+...
+```
+
+Install the `istio-base` helm chart to manage these CRDs:
+
+`helm upgrade --install istio-base istio/base -n istio-system --set defaultRevision=1-22`
+
+You should see the following output:
+
+```
+helm upgrade --install istio-base istio/base -n istio-system --set defaultRevision=1-22
+Release "istio-base" has been upgraded. Happy Helming!
+NAME: istio-base
+LAST DEPLOYED: timestamp
+NAMESPACE: istio-system
+STATUS: deployed
+REVISION: 2
+TEST SUITE: None
+NOTES:
+Istio base successfully installed!
+```
 
 ## Install Gloo Mesh Core
 
