@@ -5,8 +5,8 @@ global:
 name: eiap-ingress-gw01-canary
 revision: 1-22
 labels: # applies to all labels and selectors
-  app: eiap-ingress-gw01
-  istio: eiap-ingress-gw01
+  app: eiap-ingress-gw01-canary
+  istio: eiap-ingress-gw01-canary
 service:
   # Replace with actual load balancer IP and type with LoadBalancer
   # loadBalancerIP: 127.0.0.1

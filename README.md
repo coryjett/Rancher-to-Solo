@@ -215,7 +215,7 @@ Configure bookinfo for routing using the Rancher
 
 `kubectl apply -f bookinfo-routing.yaml`
 
-Confirm you can hit the deployed application by navigating to `http://productpage.my.org:8080/`
+Confirm you can hit the deployed application by navigating to `http://productpage.my.org:8080/productpage`
 
 ## Create a tag for the new revision
 
