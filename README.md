@@ -101,6 +101,7 @@ Modify /etc/hosts
 ```
 127.0.0.1 rancher.my.org
 127.0.0.1 productpage.my.org
+127.0.0.1 productpage-canary.my.org
 ```
 
 Navigate to https://rancher.my.org:8081/
