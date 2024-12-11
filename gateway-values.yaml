@@ -2,7 +2,7 @@ global:
   # Replace with actual hub value
   hub: hub
   tag: 1.22.6-solo
-name: eiap-ingress-gw01
+name: eiap-ingress-gw01-canary
 revision: 1-22
 labels: # applies to all labels and selectors
   app: eiap-ingress-gw01

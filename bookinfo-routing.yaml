@@ -1,0 +1,56 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app: productpage
+  name: istio-ingressgateway
+  namespace: istio-system
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: 'productpage.my.org'
+    http:
+      paths:
+      - backend:
+          service:
+            name: istio-ingressgateway
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: productpage
+  namespace: default
+spec:
+  selector:
+    app: istio-ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - 'productpage.my.org'
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: productpage
+  namespace: default
+spec:
+  hosts:
+  - 'productpage.my.org'
+  gateways:
+  - productpage
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 9080
+        host: productpage

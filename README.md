@@ -98,7 +98,10 @@ helm install rancher rancher-latest/rancher \
 
 Modify /etc/hosts
 
-`127.0.0.1	rancher.my.org`
+```
+127.0.0.1 rancher.my.org
+127.0.0.1 productpage.my.org
+```
 
 Navigate to https://rancher.my.org:8081/
 
@@ -198,15 +201,21 @@ This will provision a second gateway attached to the new `1-22` Istio control pl
 
 ![High Level Canary](/images/high-level-canary.svg)
 
-## Deploy a sample app
+## Deploy a sample app and configure routing
 
 Enable instio sidecar injection
 
 `kubectl label namespace default istio-injection=enabled`
 
-Create a sample pod
+Deploy a modified version of the [bookinfo](https://github.com/istio/istio/tree/master/samples/bookinfo) application
 
-`kubectl apply -f bookinfo.yml`
+`kubectl apply -f bookinfo.yaml`
+
+Configure bookinfo for routing using the Rancher 
+
+`kubectl apply -f bookinfo-routing.yaml`
+
+Confirm you can hit the deployed application by navigating to `http://productpage.my.org:8080/`
 
 ## Create a tag for the new revision
 
