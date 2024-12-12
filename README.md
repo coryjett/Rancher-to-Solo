@@ -205,7 +205,7 @@ https://istio.io/latest/blog/2021/revision-tags/
 
 https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-tag
 
-### Create a tag
+### Create a revision tag
 
 List existing tags
 
@@ -257,7 +257,7 @@ Make sure the root CA is the same as previously so that everything is trusted.
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.  Compare it to the previous root certificate that was used for Rancher deploy Istio and confirm they are the same.
 
-## Cut routing over to the new control plane, scale Rancher Istio Ingress to 0, and test
+## Cut routing over to the new control plane, scale Rancher Istio Gateway to 0, and test
 
 Configure the load balancer to point to the canary gateway
 
