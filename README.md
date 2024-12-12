@@ -218,9 +218,11 @@ Configure bookinfo for routing using the Rancher ingress gateway
 
 Confirm you can hit the deployed application using the Rancher Istio route by navigating to `http://productpage.my.org:8080/productpage`
 
-Confirm you can hit the deployed application using the canary Istio route by navigating to `http://productpage-canary.my.org:8080/productpage`
+Create a `port-forward` to the second gateway instance to test canary routing
 
-![Pre-cutover](/images/Pre_cutover.png)
+`kubectl port-forward -n istio-system deploy/eiap-ingress-gw01-canary 8080:80`
+
+Ensure you can hit the application on the canary route by navigating to `http://localhost:8080`
 
 ## Create a tag for the new revision
 
@@ -249,6 +251,10 @@ Verify a `MutatingWebhookConfiguration` was created for the tag
 `kubectl exec -t  deploy/reviews-v1 -- openssl s_client -showcerts -connect ratings:9080 -alpn istio`
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`
+
+## Cutover Overview
+
+![Cutover](/images/Cutover.png)
 
 ## Cut the application over to the new control plane
 

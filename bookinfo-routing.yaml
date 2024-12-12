@@ -56,26 +56,6 @@ spec:
           number: 9080
         host: productpage
 #Canary Istio custom-resources
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  labels:
-    app: productpage
-  name: istio-ingressgateway-canary
-  namespace: istio-system
-spec:
-  ingressClassName: traefik
-  rules:
-  - host: 'productpage-canary.my.org'
-    http:
-      paths:
-      - backend:
-          service:
-            name: eiap-ingress-gw01-canary
-            port:
-              number: 80
-        path: /
-        pathType: ImplementationSpecific
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
@@ -91,7 +71,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - 'productpage-canary.my.org'
+    - '*'
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -100,7 +80,7 @@ metadata:
   namespace: default
 spec:
   hosts:
-  - 'productpage-canary.my.org'
+  - '*'
   gateways:
   - productpage-canary
   http:
