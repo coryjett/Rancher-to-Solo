@@ -284,6 +284,18 @@ Make sure the root CA is the same as previously so that everything is trusted.
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.  Compare it to the previous root certificate that was used for Rancher deploy Istio and confirm they are the same.
 
+## Cut routing over to the new control plane, scale Rancher Istio Ingress to 0, and test
+
+Configure the load balancer to point to the canary gateway
+
+`kubectl apply -f bookinfo-routing-canary.yaml`
+
+Scale the Rancher Istio gateway to zero instances
+
+`kubectl scale deployment istio-ingressgateway --replicas=0 -n istio-system`
+
+Confirm you can hit the deployed application using the canary Istio route by navigating to `http://productpage.my.org:8080/productpage`
+
 ## Mark the Rancher deployed Istio CRDs as Helm managed install the istio-base Helm chart
 
 Apply the following function per [this](https://github.com/helm/helm/issues/2730#issuecomment-2128275312) Github issue:
