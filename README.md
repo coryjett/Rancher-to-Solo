@@ -188,6 +188,10 @@ Configure bookinfo for routing using the Rancher ingress gateway
 
 `kubectl apply -f bookinfo-routing.yaml`
 
+Confirm that all 4 pods in the default namespace are connected to the default Rancher mesh
+
+`istioctl proxy-status | grep "\.default"`
+
 Confirm you can hit the deployed application using the Rancher Istio route by navigating to `http://productpage.my.org:8080/productpage`
 
 Create a `port-forward` to the second gateway instance to test canary routing
@@ -244,7 +248,7 @@ Restart all pods in the `default` namespace
 
 `kubectl rollout restart deployment`
 
-Check to make sure pods are usng the name control plane
+Check to make sure the pods in the default namespace are usng the canary control plane.  You should see `1.22.6-solo`
 
 `istioctl proxy-status | grep "\.default"`
 
