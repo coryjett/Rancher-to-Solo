@@ -212,11 +212,15 @@ Deploy a modified version of the [bookinfo](https://github.com/istio/istio/tree/
 
 `kubectl apply -f bookinfo.yaml`
 
-Configure bookinfo for routing using the Rancher 
+Configure bookinfo for routing using the Rancher ingress gateway
 
 `kubectl apply -f bookinfo-routing.yaml`
 
-Confirm you can hit the deployed application by navigating to `http://productpage.my.org:8080/productpage`
+Confirm you can hit the deployed application using the Rancher Istio route by navigating to `http://productpage.my.org:8080/productpage`
+
+Confirm you can hit the deployed application using the canary Istio route by navigating to `http://productpage-canary.my.org:8080/productpage`
+
+![Pre-cutover](/images/Pre_cutover.png)
 
 ## Create a tag for the new revision
 
@@ -246,7 +250,7 @@ Verify a `MutatingWebhookConfiguration` was created for the tag
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`
 
-## Cutover to the new control plane
+## Cut the application over to the new control plane
 
 ### Cut the `default` namespace over to the new control plane
 
