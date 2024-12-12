@@ -123,31 +123,6 @@ Install the `Monitoring` chart with the default configuration
 
 Install the `Istio` chart with `Pilot`, `Kiali`, `Ingress Gateway`, `Telemetry`, and `Jaeger Tracing` enabled.  `Kiali` was complaining about a missing `CRD` and took some time before it would install.
 
-## Install a canary OSS Istio Control plane (or use the steps below to use Solo images)
-
-### Docs
-https://istio.io/latest/docs/setup/upgrade/canary/
-
-https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-advanced 
-
-### Check upgrade compatability
-
-`istioctl x precheck`
-
-### Install a new control plane with a revision field
-
-Install a new control plane
-
-`istioctl install --set revision=1-22`
-
-Check to make sure you have two control planes
-
-`kubectl get pods -n istio-system -l app=istiod`
-
-Check for multiple sidecar injector configs
-
-`kubectl get mutatingwebhookconfigurations`
-
 ## Install a canary Istio control plane using Solo images
 
 ### Docs
@@ -199,8 +174,6 @@ helm upgrade --install istio-gateway istio/gateway \
 ```
 
 This will provision a second gateway attached to the new `1-22` Istio control plane as detailed [here](https://istio.io/latest/docs/setup/additional-setup/gateway/#canary-upgrade-advanced).
-
-![Single Service Ingress](/images/single-service-ingress.png)
 
 ## Deploy a sample app and configure routing
 
@@ -264,9 +237,9 @@ Remove the `istio-injection` label and add the `istio.io/rev` label
 
 `kubectl label namespace default istio-injection- istio.io/rev=canary`
 
-Check the labels
+Check the namespace labels
 
-`kubectl get ns default --show-labels`
+`kubectl get ns default -L istio.io/rev`
 
 Restart all pods in the `default` namespace
 
