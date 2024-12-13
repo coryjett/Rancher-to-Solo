@@ -200,7 +200,7 @@ Confirm you can hit the deployed application using the Rancher Istio route by na
 
 Create a `port-forward` to the second gateway instance to test canary routing
 
-`kubectl port-forward -n istio-system deploy/istio-ingressgateway-canary 8080:80`
+`kubectl port-forward -n istio-system deploy/istio-ingressgateway-canary 8082:80`
 
 Ensure you can hit the application on the canary route by navigating to `http://localhost:8080`
 
