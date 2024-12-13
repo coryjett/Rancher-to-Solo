@@ -25,7 +25,9 @@ This provides  documentation on how to
 k3d cluster create --agents 1 rancher-cluster \
   --api-port 6445 \
   --port '8080:80@loadbalancer' \
-  --port '8081:443@loadbalancer'
+  --port '8081:443@loadbalancer' \
+  --port '8443:8443@loadbalancer' \
+  --k3s-arg="--disable=traefik@server:0"
 ```
 
 ### Delete k3d environment
@@ -72,10 +74,6 @@ https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade
 
 `helm repo add rancher-latest https://releases.rancher.com/server-charts/latest`
 
-### Create namespace for Rancher
-
-`kubectl create namespace cattle-system`
-
 ### Show available rancher versions
 `helm search repo rancher-latest/rancher --versions`
 
@@ -84,9 +82,17 @@ https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade
 ```
 helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
+  --create-namespace \
   --set hostname=rancher.my.org \
-  --set bootstrapPassword=admin
+  --set bootstrapPassword=admin \
+  --set ingress.enabled=false
 ```
+
+### Expose the Rancher deployment
+
+`kubectl patch svc rancher -n cattle-system -p '{"spec": {"type": "LoadBalancer"}}'`
+
+`kubectl patch svc rancher -n cattle-system --type merge -p '{"spec":{"ports": [{"port": 8443,"name":"http","targetPort": 443}]}}'`
 
 ### Check status
 
@@ -103,7 +109,7 @@ Modify /etc/hosts
 127.0.0.1 productpage.my.org
 ```
 
-Navigate to https://rancher.my.org:8081/
+Navigate to https://rancher.my.org:8443/
 
 Login with `admin` as the bootstrap password
 
@@ -121,6 +127,10 @@ Navigate to https://rancher.my.org:8081/dashboard/c/local/apps/charts
 Install the `Monitoring` chart with the default configuration
 
 Install the `Istio` chart with `Pilot`, `Kiali`, `Ingress Gateway`, `Telemetry`, and `Jaeger Tracing` enabled.  `Kiali` was complaining about a missing `CRD` and took some time before it would install.
+
+## Expose the ingressgateway service
+
+`kubectl patch svc istio-ingressgateway -n istio-system -p '{"spec": {"type": "LoadBalancer"}}'`
 
 ## Install a canary Istio control plane using Solo images
 
@@ -196,7 +206,7 @@ Confirm you can hit the deployed application using the Rancher Istio route by na
 
 Create a `port-forward` to the second gateway instance to test canary routing
 
-`kubectl port-forward -n istio-system deploy/eiap-ingress-gw01-canary 8080:80`
+`kubectl port-forward -n istio-system deploy/istio-ingressgateway-canary 8080:80`
 
 Ensure you can hit the application on the canary route by navigating to `http://localhost:8080`
 
@@ -262,9 +272,9 @@ Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFIC
 
 ## Cut routing over to the new control plane, scale Rancher Istio Gateway to 0, and test
 
-Configure the load balancer to point to the canary gateway
+Configure the service to point to the canary gateway
 
-`kubectl apply -f bookinfo-routing-canary.yaml`
+`kubectl patch service istio-ingressgateway -n istio-system -p '{"spec":{"selector":{"app": "istio-ingressgateway-canary", "istio": "istio-ingressgateway-canary"}}}'`
 
 Scale the Rancher Istio gateway to zero instances
 

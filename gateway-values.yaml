@@ -2,15 +2,15 @@ global:
   # Replace with actual hub value
   hub: hub
   tag: 1.22.6-solo
-name: eiap-ingress-gw01-canary
+name: istio-ingressgateway-canary
 revision: 1-22
 labels: # applies to all labels and selectors
-  app: eiap-ingress-gw01-canary
-  istio: eiap-ingress-gw01-canary
+  app: istio-ingressgateway-canary
+  istio: istio-ingressgateway-canary
 service:
   # Replace with actual load balancer IP and type with LoadBalancer
   # loadBalancerIP: 127.0.0.1
-  type: NodePort
+  type: None
 autoscaling:
   # Enable autoscaling as needed
   enabled: false
