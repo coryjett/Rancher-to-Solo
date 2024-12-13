@@ -88,17 +88,17 @@ helm install rancher rancher-latest/rancher \
   --set ingress.enabled=false
 ```
 
-### Expose the Rancher deployment
-
-`kubectl patch svc rancher -n cattle-system -p '{"spec": {"type": "LoadBalancer"}}'`
-
-`kubectl patch svc rancher -n cattle-system --type merge -p '{"spec":{"ports": [{"port": 8443,"name":"http","targetPort": 443}]}}'`
-
 ### Check status
 
 `kubectl -n cattle-system rollout status deploy/rancher`
 
 `kubectl -n cattle-system get deploy rancher`
+
+### Expose the Rancher deployment
+
+`kubectl patch svc rancher -n cattle-system -p '{"spec": {"type": "LoadBalancer"}}'`
+
+`kubectl patch svc rancher -n cattle-system --type merge -p '{"spec":{"ports": [{"port": 8443,"name":"http","targetPort": 443}]}}'`
 
 ## Access Rancher
 
