@@ -122,7 +122,7 @@ https://ranchermanager.docs.rancher.com/how-to-guides/advanced-user-guides/istio
 
 ### Install the Istio chart
 
-Navigate to https://rancher.my.org:8081/dashboard/c/local/apps/charts
+Navigate to https://rancher.my.org:8443/dashboard/c/local/apps/charts
 
 Install the `Monitoring` chart with the default configuration
 
