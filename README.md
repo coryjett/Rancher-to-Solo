@@ -200,7 +200,7 @@ Configure bookinfo for routing using the Rancher ingress gateway
 
 Confirm that all 4 pods in the default namespace are connected to the default Rancher mesh
 
-`istioctl proxy-status | grep "\.default"`
+`istioctl proxy-status -n default`
 
 Confirm you can hit the deployed application using the Rancher Istio route by navigating to `http://productpage.my.org:8080/productpage`
 
@@ -260,7 +260,7 @@ Restart all pods in the `default` namespace
 
 Check to make sure the pods in the default namespace are usng the canary control plane.  You should see `1.22.6-solo`
 
-`istioctl proxy-status | grep "\.default"`
+`istioctl proxy-status -n default`
 
 ## Check application cert chain on the canary Istio
 
