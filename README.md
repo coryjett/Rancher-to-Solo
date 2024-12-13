@@ -234,6 +234,12 @@ Verify a `MutatingWebhookConfiguration` was created for the tag
 
 ## Check application cert chain on the Rancher deployed Istio
 
+Using Istioctl
+
+`istioctl proxy-config secrets deploy/ratings-v1`
+
+Using `openssl`
+
 `kubectl exec -t  deploy/reviews-v1 -- openssl s_client -showcerts -connect ratings:9080 -alpn istio`
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`
@@ -265,6 +271,12 @@ Check to make sure the pods in the default namespace are usng the canary control
 ## Check application cert chain on the canary Istio
 
 Make sure the root CA is the same as previously so that everything is trusted.
+
+Using Istioctl
+
+`istioctl proxy-config secrets deploy/ratings-v1`
+
+Using `openssl`
 
 `kubectl exec -t  deploy/reviews-v1 -- openssl s_client -showcerts -connect ratings:9080 -alpn istio`
 
