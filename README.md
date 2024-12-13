@@ -280,6 +280,10 @@ Scale the Rancher Istio gateway to zero instances
 
 `kubectl scale deployment istio-ingressgateway --replicas=0 -n istio-system`
 
+Confirm the Rancher Istio Gateway is at zero instances
+
+`kubectl get deploy istio-ingressgateway -n istio-system`
+
 Confirm you can hit the deployed application using the canary Istio route by navigating to `http://productpage.my.org:8080/productpage`
 
 ## Mark the Rancher deployed Istio CRDs as Helm managed install the istio-base Helm chart
