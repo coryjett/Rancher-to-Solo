@@ -350,7 +350,7 @@ NOTES:
 Istio base successfully installed!
 ```
 
-## Delete the Rancher Istio deployment
+## Delete the Rancher Istio application in the UI and the Rancher Ingress Gateway
 
 Removing Rancher deployed Istio requires two steps:
 
