@@ -350,6 +350,17 @@ NOTES:
 Istio base successfully installed!
 ```
 
+## Delete the Rancher Istio deployment
+
+Removing Rancher deployed Istio requires two steps:
+
+- Delete the `rancher-istio` secret to remove the Istio application from the Rancher UI
+- Delete the `istiod` deployment
+
+`kubectl -n istio-system delete secrets -l name=rancher-istio,owner=helm`
+
+`kubectl delete deploy/istiod -n istio-system`
+
 ## Install Gloo Mesh Core management components
 
 ### Docs
