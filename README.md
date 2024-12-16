@@ -356,10 +356,13 @@ Removing Rancher deployed Istio requires two steps:
 
 - Delete the `rancher-istio` secret to remove the Istio application from the Rancher UI
 - Delete the `istiod` deployment
+- Delete the Rancher Ingress Gateway
 
 `kubectl -n istio-system delete secrets -l name=rancher-istio,owner=helm`
 
 `kubectl delete deploy/istiod -n istio-system`
+
+`kubectl -n istio-system delete deploy -l app=istio-ingressgateway,istio=ingressgateway`
 
 Rancher Istio cannot be removed through the UI (or through Helm uninstall) as it removes all Istio CRDs which will break the canary deployment.  See [this](https://github.com/rancher/istio-installer/blob/main/scripts/uninstall_istio_system.sh) link for more details on how Rancher handles the removal of Istio.
 
