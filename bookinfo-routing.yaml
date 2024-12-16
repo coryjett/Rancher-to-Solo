@@ -34,7 +34,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - 'productpage.my.org'
+    - '*'
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -43,9 +43,10 @@ metadata:
   namespace: default
 spec:
   hosts:
-  - 'productpage.my.org'
+  - '*'
   gateways:
   - productpage
+  - productpage-canary
   http:
   - match:
     - uri:
@@ -72,23 +73,23 @@ spec:
       protocol: HTTP
     hosts:
     - '*'
----
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: productpage-canary
-  namespace: default
-spec:
-  hosts:
-  - '*'
-  gateways:
-  - productpage-canary
-  http:
-  - match:
-    - uri:
-        prefix: /
-    route:
-    - destination:
-        port:
-          number: 9080
-        host: productpage
+#---
+#apiVersion: networking.istio.io/v1beta1
+#kind: VirtualService
+#metadata:
+#  name: productpage-canary
+#  namespace: default
+#spec:
+#  hosts:
+#  - '*'
+#  gateways:
+#  - productpage-canary
+#  http:
+#  - match:
+#    - uri:
+#        prefix: /
+#    route:
+#    - destination:
+#        port:
+#          number: 9080
+#        host: productpage

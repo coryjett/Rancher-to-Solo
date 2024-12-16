@@ -333,7 +333,7 @@ customresourcedefinition.apiextensions.k8s.io/wasmplugins.extensions.istio.io la
 
 Install the `istio-base` helm chart to manage these CRDs:
 
-`helm upgrade --install istio-base istio/base -n istio-system --set defaultRevision=1-22`
+`helm upgrade --install istio-base istio/base -n istio-system --set defaultRevision=main`
 
 You should see the following output:
 
