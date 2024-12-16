@@ -338,7 +338,7 @@ Install the `istio-base` helm chart to manage these CRDs:
 You should see the following output:
 
 ```
-helm upgrade --install istio-base istio/base -n istio-system --set defaultRevision=1-22
+helm upgrade --install istio-base istio/base -n istio-system --set defaultRevision=main
 Release "istio-base" has been upgraded. Happy Helming!
 NAME: istio-base
 LAST DEPLOYED: timestamp
