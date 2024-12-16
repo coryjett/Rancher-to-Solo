@@ -3,10 +3,9 @@
 This provides documentation on how to 
 
 * Deploy Rancher on k3d
-* Deploy Istio through Rancher
-* Deploy a canary Istio control plane & gateway using hardened and supported Solo.io images
-* View both Istio control planes through Gloo Mesh Core UI
-* Cutover to the new control plane
+* Deploy Rancher Istio
+* Deploy a canary Solo Istio control plane & gateway using hardened and supported Solo.io images
+* Cutover applications and gateway from Rancher Istio to Solo Istio
 
 ## Prerequisites
 
