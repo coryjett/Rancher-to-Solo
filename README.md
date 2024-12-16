@@ -1,10 +1,10 @@
 ## Overview
 
-This provides  documentation on how to 
+This provides documentation on how to 
 
 * Deploy Rancher on k3d
 * Deploy Istio through Rancher
-* Deploy a canary Istio control plane using hardened and supported Solo.io images
+* Deploy a canary Istio control plane & gateway using hardened and supported Solo.io images
 * View both Istio control planes through Gloo Mesh Core UI
 * Cutover to the new control plane
 
@@ -180,7 +180,7 @@ This will provision a second gateway attached to the new `1-22` Istio control pl
 
 ## Deploy a sample app and configure routing
 
-Enable instio sidecar injection
+Enable istio sidecar injection
 
 `kubectl label namespace default istio-injection=enabled`
 
@@ -188,7 +188,7 @@ Deploy a modified version of the [bookinfo](https://github.com/istio/istio/tree/
 
 `kubectl apply -f bookinfo.yaml`
 
-Configure bookinfo for routing using the Rancher ingress gateway
+Configure bookinfo for routing
 
 `kubectl apply -f bookinfo-routing.yaml`
 
@@ -198,11 +198,11 @@ Confirm that all 4 pods in the default namespace are connected to the default Ra
 
 Confirm you can hit the deployed application using the Rancher Istio route by navigating to `http://productpage.my.org:8080/productpage`
 
-Create a `port-forward` to the second gateway instance to test canary routing
+Create a `port-forward` to the canary gateway instance to test
 
 `kubectl port-forward -n istio-system deploy/istio-ingressgateway-canary 8082:80`
 
-Ensure you can hit the application on the canary route by navigating to `http://localhost:8082`
+Ensure you can hit the application on the canary gateway by navigating to `http://localhost:8082`
 
 ## Create a tag for the new revision
 
@@ -276,9 +276,9 @@ Using `openssl`
 
 Under `1 s:O = cluster.local`, note the certificate between `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.  Compare it to the previous root certificate that was used for Rancher deploy Istio and confirm they are the same.
 
-## Cut routing over to the new control plane, scale Rancher Istio Gateway to 0, and test
+## Cut routing over to the new Solo istio ingress gateway, scale Rancher Istio Gateway to 0, and test
 
-Configure the service to point to the canary gateway
+Configure the Istio ingress gateway service to point to the canary gateway deployment, allowing you to maintain your IP address.
 
 `kubectl patch service istio-ingressgateway -n istio-system -p '{"spec":{"selector":{"app": "istio-ingressgateway-canary", "istio": "istio-ingressgateway-canary"}}}'`
 
@@ -290,9 +290,11 @@ Confirm the Rancher Istio Gateway is at zero instances
 
 `kubectl get deploy istio-ingressgateway -n istio-system`
 
-Confirm you can hit the deployed application using the canary Istio route by navigating to `http://productpage.my.org:8080/productpage`
+Confirm you can hit the deployed application using the the new Solo istio ingress gateway by navigating to `http://productpage.my.org:8080/productpage`
 
-## Mark the Rancher deployed Istio CRDs as Helm managed install the istio-base Helm chart
+## Take over Rancher installed Istio CRDs
+
+Mark the Rancher deployed Istio CRDs as Helm managed and install the istio-base Helm chart.
 
 Apply the following function per [this](https://github.com/helm/helm/issues/2730#issuecomment-2128275312) Github issue:
 
@@ -349,7 +351,7 @@ NOTES:
 Istio base successfully installed!
 ```
 
-## Install Gloo Mesh Core
+## Install Gloo Mesh Core management components
 
 ### Docs
 
