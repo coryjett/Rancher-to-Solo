@@ -1,5 +1,5 @@
 # Istio revision to create resources with
-revision: 1-22
+revision: main
 
 global:
   # Solo.io Istio distribution repository; required for Gloo Mesh Istio.

@@ -219,7 +219,7 @@ List existing tags
 
 Create a new tag called `canary` for the new control plane
 
-`istioctl tag set canary --revision 1-22 --overwrite`
+`istioctl tag set canary --revision main --overwrite`
 
 Verify a `MutatingWebhookConfiguration` was created for the tag
 

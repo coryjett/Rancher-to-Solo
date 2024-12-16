@@ -3,7 +3,7 @@ global:
   hub: hub
   tag: 1.22.6-solo
 name: istio-ingressgateway-canary
-revision: 1-22
+revision: main
 labels: # applies to all labels and selectors
   app: istio-ingressgateway-canary
   istio: istio-ingressgateway-canary
